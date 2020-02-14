@@ -6,7 +6,7 @@ put melons in a shopping cart.
 Authors: Joel Burton, Christian Fernandez, Meggie Mahnken, Katie Byers.
 """
 
-from flask import Flask, render_template, redirect, flash
+from flask import Flask, render_template, redirect, flash, session
 import jinja2
 
 import melons
@@ -21,6 +21,15 @@ app.secret_key = 'this-should-be-something-unguessable'
 # Jinja silently ignores this. This makes debugging difficult, so we'll
 # set an attribute of the Jinja environment that says to make this an
 # error.
+
+
+@app.route('/session-basics/set')
+def set_session():
+    """"""
+    # session[melon_id] = {count}
+    session['testKey'] = {'testValue'}
+    return render_template('basic-set-session.html')
+
 
 app.jinja_env.undefined = jinja2.StrictUndefined
 
@@ -47,8 +56,8 @@ def show_melon(melon_id):
 
     Show all info about a melon. Also, provide a button to buy that melon.
     """
-
-    melon = melons.get_by_id("meli")
+    # Because we are passing in a variable, the argument doesn't need quotes
+    melon = melons.get_by_id(melon_id)
     print(melon)
     return render_template("melon_details.html",
                            display_melon=melon)
